@@ -350,8 +350,8 @@ namespace Form1
                 if (currentRound == 3)
                 {
                     MessageBox.Show($"Chúc mừng! Bạn đã hoàn thành tất cả các vòng!");
-                    //ResetGame();  // Reset trò chơi sau khi hoàn thành
-                    base.Close();   //Đóng trò chơi
+                    ResetGame();  // Reset trò chơi sau khi hoàn thành
+                    //base.Close();   //Đóng trò chơi
                 }
                 else
                 {
@@ -402,11 +402,11 @@ namespace Form1
             }
             else if (currentRound == 2)
             {
-                timeLeft = 20;  // Đặt lại thời gian cho vòng 2 là 20s
+                timeLeft = 10;  // Đặt lại thời gian cho vòng 2 là 20s
             }
             else if (currentRound == 3)
             {
-                timeLeft = 30;  // Đặt lại thời gian cho vòng 3 là 30s
+                timeLeft = 10;  // Đặt lại thời gian cho vòng 3 là 30s
             }
 
             // Tiếp theo là code để khởi tạo vòng chơi, ví dụ như tạo các thùng rác
