@@ -3,37 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO; // For File operations
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace Form1
 {
-    public partial class Form1 : Form
+    public partial class Form2 : Form
     {
-        //PHẦN QUIZ
-        int currentQuizQuestion = 1; // Biến đếm câu hỏi
-        int quizScore = 0; // Điểm cho phần Quiz
-        string[] questions = 
-            { 
-            "Câu hỏi 1: Thủ đô của Việt Nam là gì?", 
-            "Câu hỏi 2: Mặt trời mọc ở đâu?", 
-            "Câu hỏi 3: Thủ đô của Pháp là gì?" 
-        };
-        string[,] answers = {
-            { "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Nha Trang" },  // Đáp án cho câu 1
-            { "Đông", "Tây", "Nam", "Bắc" }, // Đáp án cho câu 2
-            { "Paris", "London", "New York", "Berlin" }  // Đáp án cho câu 3
-        };
-        string[] correctAnswers = { "A", "A", "A" }; // Các đáp án đúng
-        private string selectedAnswer = "";  // Biến lưu đáp án đã chọn
-
 
 
         //PHẦN PHÂN LOẠI RÁC
-        //private Timer gameTimer;
+        private Timer gameTimer;
         private PictureBox trash;
         private int score = 0;
         private int highScore = 0;
@@ -43,151 +27,23 @@ namespace Form1
         private string correctBin;
         private int currentRound = 1; // Biến theo dõi vòng hiện tại
 
-        public Form1()
+        public Form2()
         {
-            //PHẦN QUIZ
-            StartQuiz(); // Bắt đầu quiz khi khởi tạo
+            
 
-
-
-
-            /*//PHẦN PHÂN LOẠI RÁC
+            //PHẦN PHÂN LOẠI RÁC
             InitializeComponent();
             LoadHighScore();
             InitializeGame();
 
-            gameTimer = new Timer();
+            /*gameTimer = new Timer();
             gameTimer.Interval = 1000; // Ví dụ: mỗi giây một lần
             gameTimer.Tick += GameTimer_Tick; // Gắn sự kiện cho timer
 
             random = new Random(); // Khởi tạo Random*/
         }
 
-        //PHẦN QUIZ
-        // HÀM BẮT ĐẦU QUIZ
-        private void StartQuiz()
-        {
-            currentQuestionIndex = 0; // Đảm bảo bắt đầu từ câu hỏi đầu tiên
-            ShowQuizQuestion(currentQuestionIndex); // Bắt đầu từ câu hỏi đầu tiên
-        }
 
-
-        // Thêm biến global để giữ Label câu hỏi và các nút trả lời
-        // Khai báo các điều khiển toàn cục
-        private Panel panel;
-        private Label questionLabel;
-        private Button answerA, answerB, answerC, answerD;
-
-        // Khai báo biến toàn cục
-        private int currentQuestionIndex = 0; // Dùng biến này để theo dõi câu hỏi hiện tại
-
-        private void ShowQuizQuestion(int questionIndex)
-        {
-            // Tạo form quiz và các điều khiển chỉ một lần
-            if (questionLabel == null)
-            {
-                // Tạo form quiz và các điều khiển nếu chưa có
-                Form quizForm = this;
-                quizForm.Width = 400;
-                quizForm.Height = 500; // Điều chỉnh chiều cao form cho vừa với tất cả các điều khiển
-                quizForm.Text = "Quiz";
-
-                // Thêm nền vào form quiz
-                panel = new Panel();  // Khai báo và tạo panel ở đây
-                panel.Dock = DockStyle.Fill;
-                panel.BackgroundImage = Properties.Resources.background_quiz; // Đặt hình nền từ resources
-                panel.BackgroundImageLayout = ImageLayout.Stretch;
-                quizForm.Controls.Add(panel);
-
-                // Label câu hỏi
-                questionLabel = new Label();
-                questionLabel.Font = new Font("Arial", 16, FontStyle.Bold);  // Chữ với kích thước 16
-                questionLabel.Location = new Point(20, 20); // Vị trí câu hỏi
-                questionLabel.AutoSize = true; // Tự động điều chỉnh kích thước chữ theo nội dung
-                questionLabel.ForeColor = Color.Black; // Màu chữ đen
-                panel.Controls.Add(questionLabel);
-
-                // Các nút đáp án A, B, C, D
-                answerA = new Button();
-                answerA.Left = 10;
-                answerA.Top = 120;
-                answerA.Width = 360;
-                answerA.Height = 50;  // Đảm bảo chiều cao nút đủ lớn để chứa chữ
-                answerA.Font = new Font("Arial", 16, FontStyle.Bold);  // Chữ lớn cho đáp án
-                answerA.Click += (sender, e) => CheckAnswer("A", questionIndex);
-                answerA.ForeColor = Color.Black;  // Màu chữ đen
-                panel.Controls.Add(answerA);
-
-                answerB = new Button();
-                answerB.Left = 10;
-                answerB.Top = 180;
-                answerB.Width = 360;
-                answerB.Height = 50;  // Đảm bảo chiều cao nút đủ lớn để chứa chữ
-                answerB.Font = new Font("Arial", 16, FontStyle.Bold);  // Chữ lớn cho đáp án
-                answerB.Click += (sender, e) => CheckAnswer("B", questionIndex);
-                answerB.ForeColor = Color.Black;  // Màu chữ đen
-                panel.Controls.Add(answerB);
-
-                answerC = new Button();
-                answerC.Left = 10;
-                answerC.Top = 240;
-                answerC.Width = 360;
-                answerC.Height = 50;  // Đảm bảo chiều cao nút đủ lớn để chứa chữ
-                answerC.Font = new Font("Arial", 16, FontStyle.Bold);  // Chữ lớn cho đáp án
-                answerC.Click += (sender, e) => CheckAnswer("C", questionIndex);
-                answerC.ForeColor = Color.Black;  // Màu chữ đen
-                panel.Controls.Add(answerC);
-
-                answerD = new Button();
-                answerD.Left = 10;
-                answerD.Top = 300;
-                answerD.Width = 360;
-                answerD.Height = 50;  // Đảm bảo chiều cao nút đủ lớn để chứa chữ
-                answerD.Font = new Font("Arial", 16, FontStyle.Bold);  // Chữ lớn cho đáp án
-                answerD.Click += (sender, e) => CheckAnswer("D", questionIndex);
-                answerD.ForeColor = Color.Black;  // Màu chữ đen
-                panel.Controls.Add(answerD);
-            }
-
-            // Cập nhật câu hỏi và các đáp án
-            questionLabel.Text = questions[questionIndex]; // Cập nhật câu hỏi
-            answerA.Text = answers[questionIndex, 0]; // Cập nhật đáp án A
-            answerB.Text = answers[questionIndex, 1]; // Cập nhật đáp án B
-            answerC.Text = answers[questionIndex, 2]; // Cập nhật đáp án C
-            answerD.Text = answers[questionIndex, 3]; // Cập nhật đáp án D
-        }
-
-        private void CheckAnswer(string selectedAnswer, int questionIndex)
-        {
-            // Debug thông báo giá trị của selectedAnswer và correctAnswers
-            Console.WriteLine($"Đáp án chọn: {selectedAnswer.Trim()}");
-            Console.WriteLine($"Đáp án đúng: {correctAnswers[questionIndex].Trim()}");
-
-            // So sánh đáp án đã chọn với đáp án đúng
-            if (selectedAnswer.Trim().ToLower() == correctAnswers[questionIndex].Trim().ToLower())
-            {
-                quizScore++;
-                MessageBox.Show($"Đúng rồi! Điểm của bạn: {quizScore}");
-            }
-            else
-            {
-                // Thông báo sai và hiển thị đáp án đúng
-                MessageBox.Show($"Sai rồi! Đáp án đúng là: {correctAnswers[questionIndex]}\nĐiểm của bạn: {quizScore}");
-            }
-
-            // Kiểm tra nếu còn câu hỏi tiếp theo
-            currentQuestionIndex++; // Tăng chỉ số câu hỏi
-            if (currentQuestionIndex < questions.Length)
-            {
-                ShowQuizQuestion(currentQuestionIndex); // Hiển thị câu hỏi tiếp theo
-            }
-            else
-            {
-                // Sau khi quiz xong, chuyển qua phần phân loại rác
-                MessageBox.Show("Bạn đã hoàn thành quiz! Điểm của bạn: " + quizScore);
-                StartTrashSortingGame(); // Gọi game phân loại rác
-            }
-        }
 
         // HÀM BẮT ĐẦU PHÂN LOẠI RÁC
         private void StartTrashSortingGame()
@@ -198,19 +54,16 @@ namespace Form1
             // Ẩn form quiz
             this.Hide();
 
-            // Chạy lại game phân loại rác
-            Form2 trashSortingForm = new Form2();
-            trashSortingForm.Show();  // Hiển thị game phân loại rác
+            // Nếu bạn cần mở lại form này thì có thể chỉ cần gọi:
+            this.Show();  // Không cần tạo form mới, chỉ cần hiển thị lại form hiện tại
         }
 
 
 
 
-
-
-
-        /*//PHẦN PHÂN LOẠI RÁC
+        //PHẦN PHÂN LOẠI RÁC
         private Dictionary<string, string> trashCategoryMapping;
+
         private void InitializeGame()
         {
             this.Text = "Trash Sorting Game";
@@ -250,26 +103,25 @@ namespace Form1
             this.Controls.Add(lblHighScore);
 
             // Trash bins with appropriate images
-            //CreateTrashBin("chatlong", Properties.Resources.thungracchatlong, new Point(20, 250));
             CreateTrashBin("huuco", Properties.Resources.thungrachuuco, new Point(100, 250));
             CreateTrashBin("nhua", Properties.Resources.thungracnhua, new Point(300, 250));
             CreateTrashBin("racconlai", Properties.Resources.thungracconlai, new Point(500, 250));
 
             // Initialize the trash category mapping
             trashCategoryMapping = new Dictionary<string, string>
-    {
-            { "huuco_tao", "huuco" },
-            { "huuco_xuongca", "huuco" },
-            { "huuco_banhmi", "huuco" },
-            //{ "giay_giaybao", "giay" },
-            { "kimloai_coca", "kimloai" },
-            { "nhua_chainuoc", "nhua" },
-            { "racconlai_tuinilong", "racconlai" },
-            { "racconlai_giayan", "racconlai" },
-            { "racconlai_muongnia", "racconlai" },
-            { "racconlai_hopnhua", "racconlai" },
-            { "racconlai_khautrang", "racconlai" }
-    };
+            {
+                { "huuco_tao", "huuco" },
+                { "huuco_xuongca", "huuco" },
+                { "huuco_banhmi", "huuco" },
+                { "kimloai_coca", "kimloai" },
+                { "nhua_chainuoc", "nhua" },
+                { "racconlai_tuinilong", "racconlai" },
+                { "racconlai_giayan", "racconlai" },
+                { "racconlai_muongnia", "racconlai" },
+                { "racconlai_hopnhua", "racconlai" },
+                { "racconlai_khautrang", "racconlai" }
+            };
+
             // Falling trash
             trash = new PictureBox
             {
@@ -278,12 +130,14 @@ namespace Form1
             };
             this.Controls.Add(trash);
 
-            // Game Timer
+            // Khởi tạo gameTimer chỉ một lần
             gameTimer = new Timer
             {
-                Interval = 1000
+                Interval = 1000 // Mỗi giây một lần
             };
-            gameTimer.Tick += GameTimer_Tick;
+            gameTimer.Tick += GameTimer_Tick; // Gắn sự kiện cho timer
+
+            // Bắt đầu game timer
             gameTimer.Start();
 
             this.KeyDown += MainForm_KeyDown;
@@ -455,19 +309,25 @@ namespace Form1
             }
         }
 
-        *//*private void GameTimer_Tick(object sender, EventArgs e)
+        private void GameTimer_Tick(object sender, EventArgs e)
         {
-            timeLeft--;
+            timeLeft--;  // Giảm thời gian
+
+            // Cập nhật thời gian còn lại
             this.Controls["lblTime"].Text = $"Time: {timeLeft}s";
 
+            // Nếu thời gian hết
             if (timeLeft <= 0)
             {
-                gameTimer.Stop();
-                MessageBox.Show($"Time's up! Final Score: {score}");
-                SaveHighScore();
-                this.Close();
+                gameTimer.Stop();  // Dừng đồng hồ
+
+                // Kiểm tra điều kiện thắng vòng hiện tại
+                HandleRoundCompletion();  // Kiểm tra nếu vòng này đã hoàn thành
+
+                // Nếu cần thiết, có thể hiển thị thêm thông báo kết thúc hoặc tiếp tục
             }
-        }*//*
+        }
+
 
         private bool isRoundCompleted = false;
 
@@ -479,6 +339,9 @@ namespace Form1
             if (isRoundCompleted) return;  // Nếu vòng này đã được hoàn thành, thì không làm gì thêm.
 
             isRoundCompleted = true;  // Đánh dấu là vòng này đã hoàn thành.
+
+            // Debug: In ra điểm hiện tại và vòng hiện tại
+            MessageBox.Show($"Điểm hiện tại: {score}, Vòng hiện tại: {currentRound}");
 
             // Kiểm tra nếu điểm đạt yêu cầu để tiếp tục vòng tiếp theo
             if (score >= requiredScores[currentRound - 1])  // currentRound bắt đầu từ 1, nhưng mảng bắt đầu từ 0
@@ -510,7 +373,8 @@ namespace Form1
         }
 
 
-        private void GameTimer_Tick(object sender, EventArgs e)
+
+        /*private void GameTimer_Tick(object sender, EventArgs e)
         {
             if (timeLeft <= 0)
             {
@@ -522,7 +386,7 @@ namespace Form1
                 timeLeft--;
                 this.Controls["lblTime"].Text = $"Time: {timeLeft}s";  // Cập nhật thời gian
             }
-        }
+        }*/
 
 
 
@@ -618,7 +482,6 @@ namespace Form1
             this.Controls["lblTime"].Text = $"Time: {timeLeft}s";
             this.Controls["lblScore"].Text = $"Score: {score}";
             this.Controls["lblRound"].Text = $"Round: {currentRound}/3";  // Thêm phần hiển thị số vòng
-        }*/
-
+        }
     }
 }
