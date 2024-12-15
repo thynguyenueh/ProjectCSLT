@@ -18,16 +18,31 @@ namespace Form1
         int quizScore = 0; // Điểm cho phần Quiz
         string[] questions = 
             { 
-            "Câu hỏi 1: Thủ đô của Việt Nam là gì?", 
-            "Câu hỏi 2: Mặt trời mọc ở đâu?", 
-            "Câu hỏi 3: Thủ đô của Pháp là gì?" 
-        };
+            "Câu hỏi 1: Bạn đang cần đóng hàng gửi chuyển phát qua đường bưu điện. Bạn nên chọn vật dụng nào để tái sử dụng và giảm phát thải nhất?", 
+            "Câu hỏi 2: Đâu là những thói quen không nên làm, vì sẽ gây lãng phí điện?", 
+            "Câu hỏi 3: Dùng để chế tạo túi nylon, lọ hóa chất. Không được dùng trong lò vi sóng, độ bền kém",
+            "Câu hỏi 4: Đố bạn loại nhựa nào có các đặc điểm sau đây: rất độc hại, rẻ tiền, dùng để sản xuất vật dụng đựng hóa chất hay bình đựng nước",
+            "Câu hỏi 5: Rác thải điện tử là một vấn đề nghiêm trọng hiện nay. Bạn có biết lượng rác thải điện tử mỗi năm bị thải ra trên toàn cầu là bao nhiêu không?",
+            "Câu hỏi 6: Bạn đang ở siêu thị và mua các mặt hàng sau đây (rau, cà tím, nấm, cà rốt). Bạn hãy lựa chọn cách đựng các món hàng đã mua để giảm thiểu phát thải?",
+            "Câu hỏi 7: iPhone 16 được ra mắt trong thời gian tới, bạn là người yêu thích công nghệ và có đủ tiền để mua, bạn sẽ làm gì?",
+            "Câu hỏi 8: Bạn nên sử dụng thìa, dĩa nhựa dùng 1 lần để giảm phát thải trong các hoạt động tập thể nào?",
+            "Câu hỏi 9: Bạn nghĩ đâu KHÔNG PHẢI là cách làm hữu hiệu nhất để giảm thiểu rác thải nhựa từ vỏ chai đựng các chất tẩy rửa?",
+            "Câu hỏi 10: Bạn hãy cho biết, hành động nào làm pin sạc mau hư? ",
+            };
         string[,] answers = {
-            { "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Nha Trang" },  // Đáp án cho câu 1
-            { "Đông", "Tây", "Nam", "Bắc" }, // Đáp án cho câu 2
-            { "Paris", "London", "New York", "Berlin" }  // Đáp án cho câu 3
+            { "Mua thùng nhựa mới", "Mua thùng carton mới", "Tận dụng thùng nhựa hoặc carton cũ", "Không có đáp án đúng" },  // Đáp án cho câu 1
+            { "Để tủ lạnh mở quá lâu", "Không rút sạc khi laptop và điện thoại đã được sạc đầy", "Bật quạt và đèn trong phòng trống", "Tất cả đáp án trên" }, // Đáp án cho câu 2
+            { "PVC", "HDPE", "LDPE", "PET/PETE" }, // Đáp án cho câu 3
+            {"Other" , "PET/PETE" , "LDPE", "HDPE"},
+            {"54 triệu tấn", "24 triệu tấn", "44 triệu tấn","34 triệu tấn"},
+            {"4 túi nilon, mỗi túi đựng 1 món", "1 túi nilon đựng 4 món hàng","2 túi nilon, mỗi túi đựng 2 món hàng","3 túi nilon, 1 túi đựng nắm, 1 túi đựng rau, 1 túi đựng cà tím và cà rốt"},
+            {"Mua iPhone 16 và bán điện thoại cũ", "Mua iPhone 16 và dùng cả chiếc điện thoại cũ", "Tìm hiểu kỹ, nếu không có nhiều khác biệt và điện thoại hiện tại vẫn đáp ứng đủ nhu cầu của bản thân thì tiếp tục dùng điện thoại đang có","Mua iPhone 16 và cho người dân điện thoại cũ" },
+            {"Không sử dụng trong bất kỳ hoạt động nào","Tiệc sinh nhật để đỡ phải dọn dẹp", "Buổi dễ ngoại ngoài trời để đỡ phải mang nặng và dọn dẹp","Câu B,C đúng" },
+            {"Học cách tự làm nước tẩy rửa sinh học từ rác thải hữu cơ như từ vỏ dứa","Refill từ túi nhựa dùng 1 lần đựng hóa chất thể tích lớn","Lựa chọn các thương hiệu cho phép trả lại bao bì để sử dụng, refill" ,"Mua chai đựng hóa chất có thể tích lớn hơn" },
+            {"Để pin trong máy quá lâu mà không sử dụng", "Để pin ở nơi có nhiệt độ không quá nóng","Sạc với thời gian vừa đủ","Sạc pin bằng bộ sạc tương thích" },
+            { },
         };
-        string[] correctAnswers = { "A", "A", "A" }; // Các đáp án đúng
+        string[] correctAnswers = { "D", "D", "C","A","A","B","C","A","B","A" }; // Các đáp án đúng
         private string selectedAnswer = "";  // Biến lưu đáp án đã chọn
 
 
