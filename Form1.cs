@@ -18,21 +18,31 @@ namespace Form1
         //PHẦN QUIZ
         private Label lblTime; // Nhãn hiển thị thời gian còn lại
         private Label lblScore; // Thêm biến thành viên để lưu tham chiếu
+        
         private int timeLeft = 20; // Biến lưu thời gian còn lại (giây)
         private Timer gameTimer; // Đồng hồ đếm ngược
+       
+        private string selectedAnswer = "";  // Biến lưu đáp án đã chọn
+        private int questionIndex = 0; // Vị trí câu hỏi hiện tại trong danh sách
+        
+        private Panel panel; // Giao diện cho câu hỏi
+        private Label questionLabel; // Nhãn hiển thị câu hỏi
+        private Button answerA, answerB, answerC, answerD; // Các nút cho đáp án
+        
+        private int currentQuestionIndex = 0; // Vị trí câu hỏi hiện tại để quản lý hiển thị
         int currentQuizQuestion = 0; // Biến đếm câu hỏi
         int quizScore = 0; // Điểm cho phần Quiz
         string[] questions = // Mảng chứa danh sách các câu hỏi
             {
-          "Câu hỏi 1: Bạn đang cần đóng hàng gửi chuyển phát qua đường bưu điện. Bạn nên chọn vật dụng nào để tái sử dụng và giảm phát thải nhất?",
+          "Câu hỏi 1: Bạn đang cần đóng hàng gửi chuyển phát qua đường bưu điện. \nBạn nên chọn vật dụng nào để tái sử dụng và giảm phát thải nhất?",
          "Câu hỏi 2: Đâu là những thói quen không nên làm, vì sẽ gây lãng phí điện?",
-         "Câu hỏi 3: Dùng để chế tạo túi nylon, lọ hóa chất. Không được dùng trong lò vi sóng, độ bền kém",
-         "Câu hỏi 4: Đố bạn loại nhựa nào có các đặc điểm sau đây: rất độc hại, rẻ tiền, dùng để sản xuất vật dụng đựng hóa chất hay bình đựng nước",
-         "Câu hỏi 5: Rác thải điện tử là một vấn đề nghiêm trọng hiện nay. Bạn có biết lượng rác thải điện tử mỗi năm bị thải ra trên toàn cầu là bao nhiêu không?",
-         "Câu hỏi 6: Bạn đang ở siêu thị và mua các mặt hàng sau đây (rau, cà tím, nấm, cà rốt). Bạn hãy lựa chọn cách đựng các món hàng đã mua để giảm thiểu phát thải?",
-         "Câu hỏi 7: iPhone 16 được ra mắt trong thời gian tới, bạn là người yêu thích công nghệ và có đủ tiền để mua, bạn sẽ làm gì?",
-         "Câu hỏi 8: Bạn nên sử dụng thìa, dĩa nhựa dùng 1 lần để giảm phát thải trong các hoạt động tập thể nào?",
-         "Câu hỏi 9: Bạn nghĩ đâu KHÔNG PHẢI là cách làm hữu hiệu nhất để giảm thiểu rác thải nhựa từ vỏ chai đựng các chất tẩy rửa?",
+         "Câu hỏi 3: Dùng để chế tạo túi nylon, lọ hóa chất. \nKhông được dùng trong lò vi sóng, độ bền kém",
+         "Câu hỏi 4: Đố bạn loại nhựa nào có các đặc điểm sau đây: rất độc hại, rẻ tiền, \ndùng để sản xuất vật dụng đựng hóa chất hay bình đựng nước",
+         "Câu hỏi 5: Rác thải điện tử là một vấn đề nghiêm trọng hiện nay. Bạn có biết \nlượng rác thải điện tử mỗi năm bị thải ra trên toàn cầu là bao nhiêu không?",
+         "Câu hỏi 6: Bạn đang ở siêu thị và mua các mặt hàng sau đây (rau, cà tím, nấm, cà rốt). \nBạn hãy lựa chọn cách đựng các món hàng đã mua để giảm thiểu phát thải?",
+         "Câu hỏi 7: iPhone 16 được ra mắt trong thời gian tới, bạn là người yêu \nthích công nghệ và có đủ tiền để mua, bạn sẽ làm gì?",
+         "Câu hỏi 8: Bạn nên sử dụng thìa, dĩa nhựa dùng 1 lần để giảm \nphát thải trong các hoạt động tập thể nào?",
+         "Câu hỏi 9: Bạn nghĩ đâu KHÔNG PHẢI là cách làm hữu hiệu nhất để \ngiảm thiểu rác thải nhựa từ vỏ chai đựng các chất tẩy rửa?",
          "Câu hỏi 10: Bạn hãy cho biết, hành động nào làm pin sạc mau hư? ",
 
      };
@@ -50,12 +60,7 @@ namespace Form1
 
      };
         string[] correctAnswers = { "D", "D", "C", "A", "A", "B", "C", "A", "B", "A" }; // Mảng chứa các đáp án đúng
-        private string selectedAnswer = "";  // Biến lưu đáp án đã chọn
-        private int questionIndex = 0; // Vị trí câu hỏi hiện tại trong danh sách
-        private Panel panel; // Giao diện cho câu hỏi
-        private Label questionLabel; // Nhãn hiển thị câu hỏi
-        private Button answerA, answerB, answerC, answerD; // Các nút cho đáp án
-        private int currentQuestionIndex = 0; // Vị trí câu hỏi hiện tại để quản lý hiển thị
+       
 
 
         public Form1()
@@ -64,9 +69,8 @@ namespace Form1
             InitializeComponent();
             InitializeGame(); // Thiết lập giao diện game
             StartQuiz(); // Bắt đầu phần Quiz
-            backgroundMusicPlayer = new SoundPlayer(Properties.Resources.backgroundmusic);
+            backgroundMusicPlayer = new SoundPlayer(Properties.Resources.background_music);
             backgroundMusicPlayer.PlayLooping();
-
 
         }
         private void ShowQuizQuestion(int questionIndex)
@@ -77,13 +81,13 @@ namespace Form1
             {
                 // Khởi tạo các thành phần giao diện cho câu hỏi
                 Form quizForm = this;
-                quizForm.Width = 400;
-                quizForm.Height = 500;
+                quizForm.Width = 800;
+                quizForm.Height = 600;
                 quizForm.Text = "Quiz";
 
                 panel = new Panel();
                 panel.Dock = DockStyle.Fill;
-                panel.BackgroundImage = Properties.Resources.background_quiz; // Nền giao diện Quiz
+                panel.BackgroundImage = Properties.Resources.background3; // Nền giao diện Quiz
                 panel.BackgroundImageLayout = ImageLayout.Stretch;
                 quizForm.Controls.Add(panel);
 
@@ -92,6 +96,7 @@ namespace Form1
                 questionLabel.Location = new Point(20, 20);
                 questionLabel.AutoSize = true;
                 questionLabel.ForeColor = Color.Black;
+                questionLabel.TextAlign = ContentAlignment.MiddleCenter;
                 panel.Controls.Add(questionLabel);
 
                 // Khởi tạo các nút cho các đáp án
@@ -131,6 +136,10 @@ namespace Form1
                 answerD.Font = new Font("Arial", 10, FontStyle.Bold);
                 answerD.Click += (sender, e) => CheckAnswer("D", questionIndex);
                 panel.Controls.Add(answerD);
+
+                // Đảm bảo không bị trùng lặp mỗi lần resize
+                quizForm.Resize += (sender, e) => UpdateLayout();
+
             }
 
             // Cập nhật nội dung câu hỏi và các đáp án
@@ -139,7 +148,24 @@ namespace Form1
             answerB.Text = answers[questionIndex, 1];
             answerC.Text = answers[questionIndex, 2];
             answerD.Text = answers[questionIndex, 3];
+
+            // Cập nhật vị trí lần đầu
+            UpdateLayout();
         }
+
+        // Phương thức cập nhật lại vị trí các thành phần
+        private void UpdateLayout()
+        {
+            // Cập nhật vị trí của câu hỏi
+            questionLabel.Location = new Point((panel.Width - questionLabel.Width) / 2, 50);  // Căn giữa câu hỏi
+
+            // Cập nhật vị trí của các đáp án
+            answerA.Location = new Point((panel.Width - answerA.Width) / 2, 120);  // Căn giữa câu A
+            answerB.Location = new Point((panel.Width - answerB.Width) / 2, 180);  // Căn giữa câu B
+            answerC.Location = new Point((panel.Width - answerC.Width) / 2, 240);  // Căn giữa câu C
+            answerD.Location = new Point((panel.Width - answerD.Width) / 2, 300);  // Căn giữa câu D
+        }
+
         private void InitializeGame()
         {
             // Thiết lập giao diện trò chơi ban đầu
@@ -149,7 +175,7 @@ namespace Form1
             {
                 Text = $"Time: {timeLeft}s",
                 Font = new Font("Arial", 16),
-                Location = new Point(20, 20),
+                Location = new Point(20, 10),
                 AutoSize = true
             };
             lblTime.Name = "lblTime";
@@ -159,17 +185,16 @@ namespace Form1
             {
                 Text = $"Score: {quizScore}",
                 Font = new Font("Arial", 16),
-                Location = new Point(20, 60),
+                Location = new Point(20, 120),
                 AutoSize = true
             };
             lblScore.Name = "lblScore";
             this.Controls.Add(lblScore);
 
-
             // // Thêm lblTime vào Controls của form để nó hiển thị trên giao diện người dùng
             this.Controls.Add(lblTime);
 
-            
+
             gameTimer = new Timer
             {
                 Interval = 1000 // Đếm ngược mỗi giây
@@ -180,12 +205,12 @@ namespace Form1
             gameTimer.Start();
         }
 
-
         private void UpdateUI()
         {
             this.Controls["lblTime"].Text = $"Time: {timeLeft}s";
             this.Controls["lblScore"].Text = $"Score: {quizScore}";
         }
+
 
 
         private bool answered = false;  // Biến theo dõi xem câu hỏi đã được trả lời chưa
@@ -217,13 +242,13 @@ namespace Form1
                     // Kiểm tra điểm sau khi hết câu hỏi
                     if (quizScore >= 50)
                     {
-                        MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length*10}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length * 10}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         StartTrashSortingGame();  //Chạy Trash Sorting
                     }
                     else
                     {
-                        MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length*10}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        StartQuiz();  //Bắt đầu lại quiz
+                        MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length * 10}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ResetGame();  //Bắt đầu lại quiz
                     }
 
                     quizScore = 0;  //Reset điểm cho vòng tiếp theo
@@ -244,57 +269,31 @@ namespace Form1
 
 
 
-        //Start quizz bình thường
+        //Khởi động quiz
         private void StartQuiz()
         {
-            currentQuestionIndex = 0; // Đảm bảo bắt đầu từ câu hỏi đầu tiên
-            ShowQuizQuestion(currentQuestionIndex); // Bắt đầu từ câu hỏi đầu tiên
+            // Reset các giá trị
+            currentQuestionIndex = 0;
+            quizScore = 0; // Reset điểm
+            timeLeft = 20; // Reset thời gian cho mỗi câu
+            answered = false; // Đảm bảo trạng thái trả lời được reset
+            gameTimer.Start(); // Khởi động lại đồng hồ
+           
+            // Hiển thị câu hỏi đầu tiên
+            ShowQuizQuestion(currentQuestionIndex);
         }
 
-
-
-
-        /*//Start quizz random
-        private void StartQuiz()
+        private void ResetGame()
         {
-            // Chọn 5 câu hỏi ngẫu nhiên
-            SelectRandomQuestions();
-
-            // Khởi động đồng hồ và các thiết lập khác
-            timeLeft = 20;  // Đặt lại thời gian
-            gameTimer.Start();  // Bắt đầu đếm thời gian
-            quizScore = 0;  // Đặt lại điểm số
-            currentQuizQuestion = 0;  // Bắt đầu từ câu hỏi đầu tiên
-        }*/
-
-
-
-
-
-        /*//Chọn câu hỏi random
-        private List<int> selectedQuestions = new List<int>();  // Danh sách câu hỏi đã chọn
-        private void SelectRandomQuestions()
-        {
-            Random random = new Random();
-            selectedQuestions.Clear();  // Reset danh sách câu hỏi đã chọn
-
-            while (selectedQuestions.Count < 5)  // Lấy 5 câu hỏi ngẫu nhiên
-            {
-                int questionIndex = random.Next(0, 10);  // Lấy một chỉ số ngẫu nhiên từ 0 đến 9
-                if (!selectedQuestions.Contains(questionIndex))  // Kiểm tra trùng lặp
-                {
-                    selectedQuestions.Add(questionIndex);  // Thêm câu hỏi vào danh sách đã chọn
-                }
-            }
-
-            // Hiển thị câu hỏi đầu tiên
-            ShowQuizQuestion(selectedQuestions[0]);
-        }*/
-
-
-
-
-
+            // Reset các giá trị trò chơi về trạng thái ban đầu
+            currentQuizQuestion = 0;
+            quizScore = 0;
+            timeLeft = 20;
+            answered = false;
+            UpdateUI();
+            ShowQuizQuestion(currentQuizQuestion);  // Hiển thị lại câu hỏi đầu tiên
+            gameTimer.Start();
+        }
 
 
         private void CheckAnswer(string selectedAnswer, int questionIndex)
@@ -321,38 +320,8 @@ namespace Form1
             // Dừng đếm giờ và chuyển qua câu tiếp theo
             gameTimer.Stop();
 
-           
-
             // Chuyển câu hỏi tiếp theo
             currentQuizQuestion++;
-
-
-
-            /*// Kiểm tra điều kiện để kết thúc Quiz
-            if (quizScore >= 3)
-            {
-                // Nếu đạt đủ điểm (3 điểm), chuyển sang Trash Sorting Game
-                MessageBox.Show($"Chúc mừng! Bạn đã đạt đủ điểm: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                StartTrashSortingGame();  // Proceed to Trash Sorting
-                quizScore = 0;  // Reset score cho vòng tiếp theo
-            }
-            else if (currentQuizQuestion >= questions.Length)
-            {
-                // Nếu đã hết câu hỏi nhưng không đủ điểm, cho chơi lại
-                MessageBox.Show($"Bạn đã hoàn thành nhưng chỉ đạt {quizScore}/{questions.Length}. Hãy thử lại!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                StartQuiz();  // Restart the quiz
-                quizScore = 0;  // Reset score cho vòng tiếp theo
-            }
-            else
-            {
-                // Nếu chưa đủ điểm và vẫn còn câu hỏi, tiếp tục
-                timeLeft = 20;  // Reset thời gian cho câu hỏi tiếp theo
-                gameTimer.Start();  // Khởi động lại bộ đếm thời gian
-                ShowQuizQuestion(currentQuizQuestion);  // Hiển thị câu hỏi tiếp theo
-            }*/
-
-
-
 
 
             // Nếu không còn câu hỏi nào nữa thì tính lại điểm
@@ -366,8 +335,8 @@ namespace Form1
                 }
                 else
                 {
-                    MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length*10}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    StartQuiz();  // Bắt đầu lại quiz
+                    MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length * 10}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ResetGame();  // Bắt đầu lại quiz
                 }
 
                 quizScore = 0;  // Reset điểm cho vòng kế tiếp
@@ -382,11 +351,6 @@ namespace Form1
 
 
 
-
-
-
-
-
         // HÀM BẮT ĐẦU PHÂN LOẠI RÁC
         private void StartTrashSortingGame()
         {
@@ -397,7 +361,7 @@ namespace Form1
             this.Hide();
 
             // Chạy lại game phân loại rác
-            Form2 trashSortingForm = new Form2();
+            FormGame trashSortingForm = new FormGame();
             trashSortingForm.Show();  // Hiển thị game phân loại rác
         }
 
