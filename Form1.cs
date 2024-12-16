@@ -17,6 +17,7 @@ namespace Form1
         private SoundPlayer backgroundMusicPlayer;
         //PHẦN QUIZ
         private Label lblTime; // Nhãn hiển thị thời gian còn lại
+        private Label lblScore; // Thêm biến thành viên để lưu tham chiếu
         private int timeLeft = 20; // Biến lưu thời gian còn lại (giây)
         private Timer gameTimer; // Đồng hồ đếm ngược
         int currentQuizQuestion = 0; // Biến đếm câu hỏi
@@ -151,8 +152,10 @@ namespace Form1
                 Location = new Point(20, 20),
                 AutoSize = true
             };
+            lblTime.Name = "lblTime";
+            this.Controls.Add(lblTime);
 
-            Label lblScore = new Label
+            lblScore = new Label
             {
                 Text = $"Score: {quizScore}",
                 Font = new Font("Arial", 16),
@@ -161,6 +164,7 @@ namespace Form1
             };
             lblScore.Name = "lblScore";
             this.Controls.Add(lblScore);
+
 
             // // Thêm lblTime vào Controls của form để nó hiển thị trên giao diện người dùng
             this.Controls.Add(lblTime);
@@ -177,7 +181,11 @@ namespace Form1
         }
 
 
-
+        private void UpdateUI()
+        {
+            this.Controls["lblTime"].Text = $"Time: {timeLeft}s";
+            this.Controls["lblScore"].Text = $"Score: {quizScore}";
+        }
 
 
         private bool answered = false;  // Biến theo dõi xem câu hỏi đã được trả lời chưa
@@ -209,12 +217,12 @@ namespace Form1
                     // Kiểm tra điểm sau khi hết câu hỏi
                     if (quizScore >= 50)
                     {
-                        MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length*10}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         StartTrashSortingGame();  //Chạy Trash Sorting
                     }
                     else
                     {
-                        MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length*10}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         StartQuiz();  //Bắt đầu lại quiz
                     }
 
@@ -307,8 +315,13 @@ namespace Form1
             // Đặt cờ answered là true nhằm ngăn chặn việc trả lời nhiều lần cho cùng một câu hỏi
             answered = true;
 
+            // Cập nhật nhãn lblScore
+            lblScore.Text = $"Score: {quizScore}";
+
             // Dừng đếm giờ và chuyển qua câu tiếp theo
             gameTimer.Stop();
+
+           
 
             // Chuyển câu hỏi tiếp theo
             currentQuizQuestion++;
@@ -348,12 +361,12 @@ namespace Form1
                 // Sau khi trả lời hết câu hỏi, kiểm tra điểm có đủ điều kiện để qua màn tiếp theo không
                 if (quizScore >= 50)
                 {
-                    MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length * 10}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     StartTrashSortingGame();  // Chuyển qua màn Trash Sorting
                 }
                 else
                 {
-                    MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length*10}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     StartQuiz();  // Bắt đầu lại quiz
                 }
 
