@@ -138,5 +138,8 @@
   <ItemGroup>
     <None Include="Resources\background_quiz.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\backgroundmusic.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

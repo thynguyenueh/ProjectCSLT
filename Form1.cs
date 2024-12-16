@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO; // Thư viện dùng để thực hiện các thao tác với tệp tin
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace Form1
 {
     public partial class Form1 : Form
     {
+        private SoundPlayer backgroundMusicPlayer;
         //PHẦN QUIZ
         private Label lblTime; // Nhãn hiển thị thời gian còn lại
         private int timeLeft = 20; // Biến lưu thời gian còn lại (giây)
@@ -61,6 +63,8 @@ namespace Form1
             InitializeComponent();
             InitializeGame(); // Thiết lập giao diện game
             StartQuiz(); // Bắt đầu phần Quiz
+            backgroundMusicPlayer = new SoundPlayer(Properties.Resources.backgroundmusic);
+            backgroundMusicPlayer.PlayLooping();
 
 
         }
