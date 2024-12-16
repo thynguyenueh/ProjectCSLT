@@ -310,29 +310,27 @@ namespace Form1
             // Move to the next question
             currentQuizQuestion++;
 
-            // If there are no more questions, evaluate the score
-            if (currentQuizQuestion >= questions.Length)
+            // Kiểm tra điều kiện để kết thúc Quiz
+            if (quizScore >= 3)
             {
-                // After all questions, check if the score is enough to proceed
-                if (quizScore >= 3)
-                {
-                    MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    StartTrashSortingGame();  // Proceed to Trash Sorting
-                }
-                else
-                {
-                    MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    StartQuiz();  // Restart the quiz
-                }
-
-                quizScore = 0;  // Reset score for the next round
+                // Nếu đạt đủ điểm (3 điểm), chuyển sang Trash Sorting Game
+                MessageBox.Show($"Chúc mừng! Bạn đã đạt đủ điểm: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                StartTrashSortingGame();  // Proceed to Trash Sorting
+                quizScore = 0;  // Reset score cho vòng tiếp theo
+            }
+            else if (currentQuizQuestion >= questions.Length)
+            {
+                // Nếu đã hết câu hỏi nhưng không đủ điểm, cho chơi lại
+                MessageBox.Show($"Bạn đã hoàn thành nhưng chỉ đạt {quizScore}/{questions.Length}. Hãy thử lại!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                StartQuiz();  // Restart the quiz
+                quizScore = 0;  // Reset score cho vòng tiếp theo
             }
             else
             {
-                // Show the next question after a short delay
-                timeLeft = 20;  // Reset time for the next question
-                gameTimer.Start();  // Restart the timer
-                ShowQuizQuestion(currentQuizQuestion);  // Show next question
+                // Nếu chưa đủ điểm và vẫn còn câu hỏi, tiếp tục
+                timeLeft = 20;  // Reset thời gian cho câu hỏi tiếp theo
+                gameTimer.Start();  // Khởi động lại bộ đếm thời gian
+                ShowQuizQuestion(currentQuizQuestion);  // Hiển thị câu hỏi tiếp theo
             }
         }
 
