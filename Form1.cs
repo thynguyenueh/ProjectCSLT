@@ -226,14 +226,17 @@ namespace Form1
 
 
 
-        /*//Start quizz bình thường
+        //Start quizz bình thường
         private void StartQuiz()
         {
             currentQuestionIndex = 0; // Đảm bảo bắt đầu từ câu hỏi đầu tiên
             ShowQuizQuestion(currentQuestionIndex); // Bắt đầu từ câu hỏi đầu tiên
-        }*/
+        }
 
-        //Start quizz random
+
+
+
+        /*//Start quizz random
         private void StartQuiz()
         {
             // Chọn 5 câu hỏi ngẫu nhiên
@@ -244,7 +247,7 @@ namespace Form1
             gameTimer.Start();  // Bắt đầu đếm thời gian
             quizScore = 0;  // Đặt lại điểm số
             currentQuizQuestion = 0;  // Bắt đầu từ câu hỏi đầu tiên
-        }
+        }*/
 
 
 
@@ -260,7 +263,10 @@ namespace Form1
         //private int currentQuestionIndex = 0; // Dùng biến này để theo dõi câu hỏi hiện tại
 
 
-        //Chọn câu hỏi random
+
+
+
+        /*//Chọn câu hỏi random
         private List<int> selectedQuestions = new List<int>();  // Danh sách câu hỏi đã chọn
         private void SelectRandomQuestions()
         {
@@ -278,7 +284,7 @@ namespace Form1
 
             // Hiển thị câu hỏi đầu tiên
             ShowQuizQuestion(selectedQuestions[0]);
-        }
+        }*/
 
 
 
@@ -310,7 +316,7 @@ namespace Form1
             // Move to the next question
             currentQuizQuestion++;
 
-            // Kiểm tra điều kiện để kết thúc Quiz
+            /*// Kiểm tra điều kiện để kết thúc Quiz
             if (quizScore >= 3)
             {
                 // Nếu đạt đủ điểm (3 điểm), chuyển sang Trash Sorting Game
@@ -331,6 +337,33 @@ namespace Form1
                 timeLeft = 20;  // Reset thời gian cho câu hỏi tiếp theo
                 gameTimer.Start();  // Khởi động lại bộ đếm thời gian
                 ShowQuizQuestion(currentQuizQuestion);  // Hiển thị câu hỏi tiếp theo
+            }*/
+
+
+
+            // If there are no more questions, evaluate the score
+            if (currentQuizQuestion >= questions.Length)
+            {
+                // After all questions, check if the score is enough to proceed
+                if (quizScore >= 3)
+                {
+                    MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    StartTrashSortingGame();  // Proceed to Trash Sorting
+                }
+                else
+                {
+                    MessageBox.Show($"Điểm của bạn là {quizScore}/{questions.Length}. Bạn chưa đủ điểm để qua màn!", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    StartQuiz();  // Restart the quiz
+                }
+
+                quizScore = 0;  // Reset score for the next round
+            }
+            else
+            {
+                // Show the next question after a short delay
+                timeLeft = 20;  // Reset time for the next question
+                gameTimer.Start();  // Restart the timer
+                ShowQuizQuestion(currentQuizQuestion);  // Show next question
             }
         }
 
