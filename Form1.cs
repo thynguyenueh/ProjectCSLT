@@ -203,7 +203,7 @@ namespace Form1
                 if (currentQuizQuestion >= questions.Length)
                 {
                     // Kiểm tra điểm sau khi hết câu hỏi
-                    if (quizScore >= 3)
+                    if (quizScore >= 50)
                     {
                         MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         StartTrashSortingGame();  //Chạy Trash Sorting
@@ -292,7 +292,7 @@ namespace Form1
             // Kiểm tra xem câu trả lời có đúng không
             if (selectedAnswer == correctAnswers[currentQuizQuestion])
             {
-                quizScore++;  // Cộng điểm nếu trả lời đúng
+                quizScore += 10;  // Cộng điểm nếu trả lời đúng
                 MessageBox.Show("Đáp án đúng! 👍", "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -342,7 +342,7 @@ namespace Form1
             if (currentQuizQuestion >= questions.Length)
             {
                 // Sau khi trả lời hết câu hỏi, kiểm tra điểm có đủ điều kiện để qua màn tiếp theo không
-                if (quizScore >= 3)
+                if (quizScore >= 50)
                 {
                     MessageBox.Show($"Hoàn thành Quiz! Bạn đã đạt điểm đủ: {quizScore}/{questions.Length}.", "Kết thúc", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     StartTrashSortingGame();  // Chuyển qua màn Trash Sorting
